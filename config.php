@@ -5,3 +5,4 @@ define("USER_NAME", "root");
 define("PASSWORD", "");
 define("DATABASE_NAME", "kaufland");
 define("XML_FILE", "feeds.xml");
+define("ERROR_FILE", "errors.log");
