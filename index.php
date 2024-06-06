@@ -1,8 +1,10 @@
 <?php
+require "config.php"; 
 require "database.php";
-$connection = new Database();function processXML($db){
-    if (file_exists("feed.xml")) {
-        $xml = simplexml_load_file("feed.xml");
+$connection = new Database();
+function processXML($db){
+    if (file_exists(XML_FILE)) {
+        $xml = simplexml_load_file(XML_FILE);
         foreach($xml as $row){
             $data =[
                 "entity_id" => $row->entity_id,
@@ -27,7 +29,7 @@ $connection = new Database();function processXML($db){
         }
     }
     else{
-        echo "helo";
+        file_put_contents('errors.log',"Respective File Not Found" . "\n",FILE_APPEND);
     }
 }
 processXML($connection);
