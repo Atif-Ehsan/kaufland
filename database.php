@@ -66,7 +66,6 @@ class Database
         $values = '"'.$values.'"';
 
         $query = "INSERT INTO ". TABLE_NAME ." ({$columns}) VALUES ({$values})";
-        echo $query;
 
         if (!mysqli_query($this->conn, $query)) {
             file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
