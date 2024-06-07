@@ -52,8 +52,8 @@ class Database
             file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
         }
     }
-    public function insert($data, $table)
-    { // function to insert the data into the table.
+    public function insert($data, $table) // function to insert the data into the table.
+    { 
         $coloumns = implode(',', array_keys($data));
 
         $values = implode("', '", array_values($data));
