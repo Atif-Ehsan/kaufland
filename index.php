@@ -10,7 +10,7 @@ function processXML($db)
 {
     if (file_exists(XML_FILE)) {
         $xml = simplexml_load_file(XML_FILE);
-        foreach ($xml as $row) { // iterate over the all the elements of the given file.
+        foreach ($xml as $row) {
             $data = [
                 "entity_id" => $row->entity_id,
                 "category_name" => $row->CategoryName,
