@@ -26,7 +26,7 @@ function processXML($db)
                 "facebook" => $row->Facebook,
                 "is_k_cup" => $row->IsKCup,
             ]; // array to store the data of specific row from the feeds file.
-            $db->insert($data, "feeds"); // function call to insert current row into the database table.
+            $db->insert($data, TABLE_NAME); // function call to insert current row into the database table.
         }
     } else {
         file_put_contents(ERROR_FILE, "Respective File Not Found" . "\n", FILE_APPEND);

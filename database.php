@@ -1,18 +1,66 @@
 <?php
-class Database{
+class Database
+{
     public $conn;
-    public function __construct(){
-        $this->conn = mysqli_connect(HOST_NAME,USER_NAME,PASSWORD,DATABASE_NAME); // Crating a connection with the database.
+    public function __construct()
+    {
+        $this->conn = mysqli_connect(HOST_NAME, USER_NAME, PASSWORD); // Crating a connection with the database.
+
         if (!$this->conn) { // to check if the connection with the database is successfull
-            file_put_contents(ERROR_FILE,mysqli_connect_error()."\n",FILE_APPEND); // if connection is not successfull then write the errors in the log file. 
+            file_put_contents(ERROR_FILE, mysqli_connect_error() . "\n", FILE_APPEND); // if connection is not successfull then write the errors in the log file. 
+        }
+
+        $this->createDatabase(); // Create database if not present
+
+        mysqli_select_db($this->conn, DATABASE_NAME); // Selecting the database.
+
+        $this->createTable(); // Create table if not present
+
+    }
+    public function createDatabase()
+    {
+        $query = "CREATE DATABASE if not exists " . DATABASE_NAME;
+        if (!mysqli_query($this->conn, $query)) { // condition to check if the query is successfull.
+            file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
         }
     }
-    public function insert($data,$table){ // function to insert the data into the table.
-        $coloumns = implode(',',array_keys($data));
-        $values = implode("', '",array_values($data));
+    public function createTable()
+    {
+        $query = "CREATE TABLE if not exists " . TABLE_NAME . " (
+            `id` int(11) NOT NULL,
+            `entity_id` int(255) DEFAULT NULL,
+            `category_name` text DEFAULT NULL,
+            `sku` int(255) DEFAULT NULL,
+            `name` varchar(255) DEFAULT NULL,
+            `description` text DEFAULT NULL,
+            `short_description` varchar(255) DEFAULT NULL,
+            `price` int(255) DEFAULT NULL,
+            `link` varchar(255) DEFAULT NULL,
+            `image` varchar(255) DEFAULT NULL,
+            `brand` varchar(255) DEFAULT NULL,
+            `rating` int(255) DEFAULT NULL,
+            `caffeine_type` varchar(255) DEFAULT NULL,
+            `count` int(255) DEFAULT NULL,
+            `flavored` varchar(255) DEFAULT NULL,
+            `seasonal` varchar(255) DEFAULT NULL,
+            `in_stock` varchar(255) DEFAULT NULL,
+            `facebook` varchar(255) DEFAULT NULL,
+            `is_k_cup` int(255) DEFAULT NULL
+          )";
+        if (!mysqli_query($this->conn, $query)) { // condition to check if the query is successfull.
+            file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
+        }
+    }
+    public function insert($data, $table)
+    { // function to insert the data into the table.
+        $coloumns = implode(',', array_keys($data));
+
+        $values = implode("', '", array_values($data));
+
         $query = "INSERT INTO $table ($coloumns) VALUES ('$values')";
-        if(!mysqli_query($this->conn,$query)) { // condition to check if the query is successfull.
-            file_put_contents(ERROR_FILE,mysqli_connect_error()."\n",FILE_APPEND); // if query is not successfull then writing the error to the log file.
+        
+        if (!mysqli_query($this->conn, $query)) { // condition to check if the query is successfull.
+            file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND); // if query is not successfull then writing the error to the log file.
         }
     }
 }
