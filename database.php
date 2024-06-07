@@ -8,13 +8,14 @@ class Database
 
         if (!$this->conn) { // to check if the connection with the database is successfull
             file_put_contents(ERROR_FILE, mysqli_connect_error() . "\n", FILE_APPEND); // if connection is not successfull then write the errors in the log file. 
+            die();
         }
 
-        $this->createDatabase(); // Create database if not present
+        $this->createDatabase(); // Creating database if not present
 
         mysqli_select_db($this->conn, DATABASE_NAME); // Selecting the database.
 
-        $this->createTable(); // Create table if not present
+        $this->createTable(); // Creating table if not present
 
     }
     public function createDatabase()
@@ -58,7 +59,7 @@ class Database
         $values = implode("', '", array_values($data));
 
         $query = "INSERT INTO $table ($coloumns) VALUES ('$values')";
-        
+
         if (!mysqli_query($this->conn, $query)) { // condition to check if the query is successfull.
             file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND); // if query is not successfull then writing the error to the log file.
         }
