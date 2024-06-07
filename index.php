@@ -1,4 +1,7 @@
 <?php
+/*
+    This file processes the xml file and adds all the rows to the table.
+*/
 require "config.php";
 require "database.php";
 $connection = new Database();
