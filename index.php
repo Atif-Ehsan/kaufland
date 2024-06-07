@@ -1,8 +1,4 @@
 <?php
-/*
-    This file creates a imports config.php and database.php file and add the data to the database after fetching from the xml file.
-*/
-
 require "config.php";
 require "database.php";
 $connection = new Database();
@@ -15,9 +11,9 @@ function processXML($db)
                 "entity_id" => $row->entity_id,
                 "category_name" => $row->CategoryName,
                 "sku" => $row->sku,
-                "name" => $row->name,
-                "description" => $row->description,
-                "short_description" => $row->shortdesc,
+                "name" => str_replace('"', '\"', $row->name),
+                "description" => str_replace('"', '\"', $row->description),
+                "short_description" => str_replace('"', '\"', $row->short_description),
                 "price" => $row->price,
                 "link" => $row->link,
                 "image" => $row->image,
@@ -30,7 +26,7 @@ function processXML($db)
                 "facebook" => $row->Facebook,
                 "is_k_cup" => $row->IsKCup,
             ]; 
-            $db->insert($data, TABLE_NAME);
+            $db->insert($data);
         }
     } else {
         file_put_contents(ERROR_FILE, "Respective File Not Found" . "\n", FILE_APPEND);

@@ -32,7 +32,7 @@ class Database
     public function createTable()
     {
         $query = "CREATE TABLE if not exists " . TABLE_NAME . " (
-            `id` int(11) NOT NULL,
+            `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
             `entity_id` int(255) DEFAULT NULL,
             `category_name` text DEFAULT NULL,
             `sku` int(255) DEFAULT NULL,
@@ -57,15 +57,18 @@ class Database
             die();
         }
     }
-    public function insert($data, $table) 
-    { 
-        $coloumns = implode(',', array_keys($data));
+    public function insert($data)
+    {
+        $columns = implode(',', array_keys($data));
 
-        $values = implode("', '", array_values($data));
+        $values = implode('", "', array_values($data));
 
-        $query = "INSERT INTO $table ($coloumns) VALUES ('$values')";
+        $values = '"'.$values.'"';
 
-        if (!mysqli_query($this->conn, $query)) { 
+        $query = "INSERT INTO ". TABLE_NAME ." ({$columns}) VALUES ({$values})";
+        echo $query;
+
+        if (!mysqli_query($this->conn, $query)) {
             file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
             die();
         }
