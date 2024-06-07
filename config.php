@@ -1,5 +1,7 @@
 <?php
-
+/*
+    This file is used to define the variables which are constant in all of the files.
+*/
 define("HOST_NAME", "localhost");
 define("USER_NAME", "root");
 define("PASSWORD", "");

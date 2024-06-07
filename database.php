@@ -1,28 +1,32 @@
 <?php
+/*
+    This file creates a database class and implements basic functions to add data into the table.
+*/
 class Database
 {
     public $conn;
     public function __construct()
     {
-        $this->conn = mysqli_connect(HOST_NAME, USER_NAME, PASSWORD); // Crating a connection with the database.
+        $this->conn = mysqli_connect(HOST_NAME, USER_NAME, PASSWORD);
 
-        if (!$this->conn) { // to check if the connection with the database is successfull
-            file_put_contents(ERROR_FILE, mysqli_connect_error() . "\n", FILE_APPEND); // if connection is not successfull then write the errors in the log file. 
+        if (!$this->conn) {
+            file_put_contents(ERROR_FILE, mysqli_connect_error() . "\n", FILE_APPEND);
             die();
         }
 
-        $this->createDatabase(); // Creating database if not present
+        $this->createDatabase();
 
-        mysqli_select_db($this->conn, DATABASE_NAME); // Selecting the database.
+        mysqli_select_db($this->conn, DATABASE_NAME);
 
-        $this->createTable(); // Creating table if not present
+        $this->createTable();
 
     }
     public function createDatabase()
     {
         $query = "CREATE DATABASE if not exists " . DATABASE_NAME;
-        if (!mysqli_query($this->conn, $query)) { // condition to check if the query is successfull.
+        if (!mysqli_query($this->conn, $query)) {
             file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
+            die();
         }
     }
     public function createTable()
@@ -48,11 +52,12 @@ class Database
             `facebook` varchar(255) DEFAULT NULL,
             `is_k_cup` int(255) DEFAULT NULL
           )";
-        if (!mysqli_query($this->conn, $query)) { // condition to check if the query is successfull.
+        if (!mysqli_query($this->conn, $query)) {
             file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
+            die();
         }
     }
-    public function insert($data, $table) // function to insert the data into the table.
+    public function insert($data, $table) 
     { 
         $coloumns = implode(',', array_keys($data));
 
@@ -60,8 +65,9 @@ class Database
 
         $query = "INSERT INTO $table ($coloumns) VALUES ('$values')";
 
-        if (!mysqli_query($this->conn, $query)) { // condition to check if the query is successfull.
-            file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND); // if query is not successfull then writing the error to the log file.
+        if (!mysqli_query($this->conn, $query)) { 
+            file_put_contents(ERROR_FILE, mysqli_error($this->conn) . "\n", FILE_APPEND);
+            die();
         }
     }
 }
